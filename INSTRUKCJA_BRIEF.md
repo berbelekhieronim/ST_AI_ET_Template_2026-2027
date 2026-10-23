@@ -16,6 +16,8 @@ Obsługę Tobii X120 trzeba osobno potwierdzić dla wersji SDK i środowiska lab
 
 ## Wybór badania i podsumowanie
 
+- W polu **Kolor zespołu** wybierz `red`, `blue`, `black`, `white`, `yellow` lub
+  `pink`. Obok pojawi się próbka koloru; jego nazwa trafia do briefu i kopii JSON.
 - W polu **Rodzaj badania** wybierz **Replikacja ze zmianą** lub **Badanie własne**.
 - Przy badaniu własnym checkbox w sekcji **Oryginalne badanie** zaznacza się
   automatycznie. Pola z publikacji oraz kolumna oryginalnego badania znikają
@@ -40,6 +42,8 @@ Obsługę Tobii X120 trzeba osobno potwierdzić dla wersji SDK i środowiska lab
 - Starsze kopie JSON można nadal wczytać. Odpowiedzi z usuniętych pól trafiają
   do `archived_fields` w nowej kopii JSON, ale nie do briefu. Po wczytaniu
   sprawdź rodzaj badania — starsza karta nie zawierała tego wyboru.
+  Dawna tekstowa nazwa zespołu jest zachowana jako `archived_fields.legacy_team_name`;
+  po wczytaniu wybierz kolor zespołu.
 - **Pobierz brief dla AI (.md)** tworzy czytelny tekst z odpowiedziami,
   zaznaczeniami, brakami oraz instrukcjami dotyczącymi weryfikacji SDK.
   Można otworzyć go jako tekst i wkleić do AI. Sam formularz niczego do AI nie wysyła.

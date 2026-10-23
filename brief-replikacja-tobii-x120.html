@@ -28,6 +28,7 @@ section{background:white;border:1px solid var(--line);border-radius:13px;padding
 #summary{background:#eef8f1;border:2px solid var(--green)}
 #summary h2{color:#15553f}
 .team-note{border-left:4px solid var(--green);background:white;padding:10px 13px}
+.team-color{display:inline-block;width:22px;height:22px;margin-top:8px;border:1px solid var(--muted);border-radius:50%;vertical-align:middle}
 h2{font-size:1.22rem;margin:0 0 6px}h3{font-size:1rem;margin:18px 0 8px}
 .lead{color:var(--muted);margin:0 0 15px}
 .tip{background:#f0f5ff;border-left:4px solid var(--accent);padding:10px 13px;border-radius:5px;margin:12px 0}
@@ -93,7 +94,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <h2>Zespół i sposób pracy</h2>
 <p class="lead">Jedna karta = jeden projekt zespołu.</p>
 <div class="two">
-<div><label class="field" for="teamName">Nazwa / kod zespołu</label><input id="teamName" type="text" data-key="team_name" placeholder="Np. Zespół 04, Grupa ST"></div>
+<div><label class="field" for="teamName">Kolor zespołu</label><select id="teamName" data-key="team_name"><option value="">Wybierz kolor zespołu…</option><option value="red">red</option><option value="blue">blue</option><option value="black">black</option><option value="white">white</option><option value="yellow">yellow</option><option value="pink">pink</option></select><span id="teamColor" class="team-color" aria-hidden="true" hidden></span></div>
 <div><label class="field" for="projectName">Nazwa projektu / wersja</label><input id="projectName" type="text" data-key="project_name" placeholder="Np. Uwaga na reklamy, v0.1"></div>
 </div>
 <label class="field">Rodzaj badania</label><select data-key="study_kind"><option value="replication">Replikacja ze zmianą</option><option value="own">Badanie własne</option></select>
@@ -264,8 +265,10 @@ const defaults = new Map(controls.map(el => [el, isToggle(el) ? el.checked : el.
 const retiredFields = new Map([
   ["team_roles", "string"], ["project_stage", "string"], ["replication_type", "string"],
   ["order_method", "string"], ["aoi1_constant", "string"], ["aoi2_constant", "string"],
-  ["aoi3_constant", "string"], ["ai_acceptance", "string"], ["design_undecided", "boolean"]
+  ["aoi3_constant", "string"], ["ai_acceptance", "string"], ["design_undecided", "boolean"],
+  ["legacy_team_name", "string"]
 ]);
+const teamColors = { red: "#d32f2f", blue: "#1565c0", black: "#000000", white: "#ffffff", yellow: "#ffdf00", pink: "#f48fb1" };
 let archivedFields = {};
 let protectStoredCopy = false;
 
@@ -294,7 +297,7 @@ function reportError(id, text, error) {
 function collect() {
   return {
     app: appId,
-    schema_version: 3,
+    schema_version: 4,
     saved_at: new Date().toISOString(),
     fields: Object.fromEntries(fields.map(el => [el.dataset.key, isToggle(el) ? el.checked : el.value])),
     checks: Object.fromEntries(checks.map(el => [el.dataset.check, el.checked])),
@@ -310,7 +313,7 @@ function validate(data) {
   if (!isRecord(data) || !isRecord(data.fields) || !isRecord(data.checks)) {
     throw new Error("Oczekiwano obiektów fields i checks.");
   }
-  if (data.schema_version !== undefined && ![2, 3].includes(data.schema_version)) {
+  if (data.schema_version !== undefined && ![2, 3, 4].includes(data.schema_version)) {
     throw new Error("Nieobsługiwana wersja kopii. Użyj pasującej wersji formularza.");
   }
   if (data.app !== undefined && data.app !== appId) {
@@ -320,6 +323,11 @@ function validate(data) {
     throw new Error("Nieprawidłowe archiwum usuniętych pól.");
   }
   const normalized = { ...data, fields: { ...data.fields }, archived_fields: { ...data.archived_fields } };
+  const oldTeam = normalized.fields.team_name;
+  if (data.schema_version !== 4 && typeof oldTeam === "string" && oldTeam !== "" && !Object.hasOwn(teamColors, oldTeam)) {
+    normalized.archived_fields.legacy_team_name = oldTeam;
+    normalized.fields.team_name = "";
+  }
   for (const [name, value] of Object.entries(normalized.archived_fields)) {
     if (!retiredFields.has(name) || typeof value !== retiredFields.get(name)) {
       throw new Error("Nieprawidłowe pole archiwalne: " + name);
@@ -327,7 +335,7 @@ function validate(data) {
   }
   const fieldMap = new Map(fields.map(el => [el.dataset.key, el]));
   const checkKeys = new Set(checks.map(el => el.dataset.check));
-  for (const [name, value] of Object.entries(data.fields)) {
+  for (const [name, value] of Object.entries(normalized.fields)) {
     if (retiredFields.has(name)) {
       if (typeof value !== retiredFields.get(name)) throw new Error("Nieprawidłowy typ pola: " + name);
       normalized.archived_fields[name] = value;
@@ -517,6 +525,10 @@ for (const el of document.querySelectorAll('#replication [data-key$="_orig"]')) 
 }
 
 function update() {
+  const color = document.querySelector('[data-key="team_name"]').value;
+  const swatch = document.getElementById("teamColor");
+  swatch.hidden = !Object.hasOwn(teamColors, color);
+  swatch.style.backgroundColor = teamColors[color] || "";
   const own = isOwnStudy();
   document.getElementById("ownStudyIndicator").checked = own;
   document.getElementById("ownStudyNote").hidden = !own;
@@ -526,7 +538,7 @@ function update() {
   }
   const migration = document.getElementById("migrationStatus");
   migration.hidden = Object.keys(archivedFields).length === 0;
-  migration.textContent = "Wczytano starsze odpowiedzi. Usunięte pola zachowano w kopii JSON jako archived_fields; nie trafiają do briefu. Sprawdź wybór rodzaju badania.";
+  migration.textContent = "Wczytano starsze odpowiedzi. Usunięte pola i dawną nazwę zespołu zachowano w kopii JSON jako archived_fields; nie trafiają do briefu. Sprawdź kolor zespołu i rodzaj badania.";
   const tests = checks.filter(el => el.closest("#quality"));
   const done = tests.filter(el => el.checked).length;
   document.getElementById("progressText").textContent = "Potwierdzone testy: " + done + " / " + tests.length;
