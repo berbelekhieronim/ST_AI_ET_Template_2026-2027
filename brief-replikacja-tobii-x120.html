@@ -168,7 +168,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="tip"><b>Sprawdź:</b> czy zapisane dane pozwolą odtworzyć warunek, bodziec, przebieg próby i wynik? Czas wykonania zadania i pomiary ruchu oczu to różne informacje.</div>
 </section>
 <section id="build">
-<h2>6. Specyfikacja prototypu</h2><p class="lead">Przełóż metodologię na funkcje aplikacji. Nie zaczynaj od dekoracji interfejsu.</p>
+<h2>6. Specyfikacja prototypu</h2><p class="lead">Przełóż metodologię na funkcje aplikacji.</p>
+<div id="templateGuidance" class="tip">W repozytorium znajduje się aplikacja szablonowa, która działa prawidłowo z eye-trackerem. Zanim zaczniesz tworzyć własną wersję, sprawdź jej strukturę, sposób połączenia z SDK i przebieg kalibracji. Zobacz też, jak są budowane ekrany prób i wyników. Wykorzystaj sprawdzone rozwiązania jako punkt wyjścia do własnego badania.</div>
 <div class="checklist">
 <label class="check"><input type="checkbox" data-check="app1"><span><b>Start / identyfikator</b><br><span class="small">Kod uczestnika, wersja eksperymentu, zgoda i instrukcja.</span></span></label>
 <label class="check"><input type="checkbox" data-check="app2"><span><b><span title="Kalibracja: dopasowanie eye-trackera do położenia wzroku uczestnika.">Kalibracja</span> i kontrola</b><br><span class="small">Integracja lub jasno opisany etap ręczny; status jakości trackingu.</span></span></label>
@@ -461,6 +462,7 @@ function brief() {
     "Urządzenie docelowe: Tobii X120. Wygenerowano: " + new Date().toISOString(),
     "",
     "## Instrukcja dla AI",
+    document.getElementById("templateGuidance").textContent.trim(),
     own
       ? "Pomóż zespołowi studentów przygotować własne badanie zgodne z opisanym planem. Nie wymagaj opisu oryginalnego badania ani porównania z publikacją."
       : "Pomóż zespołowi studentów przygotować replikację ze zmianą. Oddziel fakty z publikacji, zmiany zespołu i niewiadome.",
