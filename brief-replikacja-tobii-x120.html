@@ -15,8 +15,6 @@ main{max-width:1100px;margin:24px auto;padding:0 18px 50px}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 button{font:inherit;border:1px solid #c7d1df;background:white;color:var(--ink);border-radius:9px;padding:9px 13px;cursor:pointer}
 button.primary{background:var(--accent);color:white;border-color:var(--accent)}button:hover{filter:brightness(.97)}
-.progress{flex:1;min-width:190px;background:white;border:1px solid var(--line);border-radius:10px;padding:9px 12px}
-progress{width:100%;height:8px;accent-color:var(--green);display:block;margin-top:5px}
 .layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:18px}
 .layout>*,.two>*{min-width:0}
 nav{position:sticky;top:12px;align-self:start;background:white;border:1px solid var(--line);border-radius:13px;padding:12px}
@@ -70,20 +68,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <p>Interaktywny formularz do tworzenia replikacji badania eye-trackingowego.</p>
 </header>
 <main>
-<div class="toolbar no-print">
-
-<button class="primary" id="briefBtn">Pobierz brief dla AI (.md)</button>
-<button id="exportBtn">Kopia odpowiedzi (.json)</button>
-<button id="importBtn">Wczytaj kopię (.json)</button>
-<input id="importFile" type="file" accept=".json,application/json" hidden>
-<button id="printBtn">Drukuj / zapisz PDF</button>
-<button id="resetBtn">Wyczyść formularz</button>
-</div>
 <p id="saveStatus" class="status" role="status" aria-live="polite">Sprawdzanie zapisu lokalnego…</p>
-<p id="migrationStatus" class="status no-print" role="status" hidden></p>
-<p id="actionStatus" class="status" role="status" aria-live="polite" hidden></p>
-<p class="small no-print">Odpowiedzi zapisują się po każdej zmianie tylko w tej przeglądarce, na tym urządzeniu. To nie jest zapis w chmurze ani współpraca na żywo. Przed przeniesieniem lub zmianą nazwy pliku pobierz kopię JSON. Tryb prywatny i czyszczenie danych przeglądarki mogą usunąć zapis. Nie wpisuj danych osobowych uczestników.</p>
-<div class="progress no-print"><span id="progressText"></span><progress id="progressBar" value="0" max="100" aria-label="Postęp checklisty testów"></progress></div>
 <div class="layout">
 <nav class="no-print"><strong>Przejdź do sekcji</strong>
 <a href="#team">Zespół i sposób pracy</a>
@@ -98,7 +83,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div><label class="field" for="projectName">Nazwa projektu / wersja</label><input id="projectName" type="text" data-key="project_name" placeholder="Np. Uwaga na reklamy, v0.1"></div>
 </div>
 <label class="field">Rodzaj badania</label><select data-key="study_kind"><option value="replication">Replikacja ze zmianą</option><option value="own">Badanie własne</option></select>
-<div class="tip">HTML służy do wypełniania i dalszej edycji. JSON to kopia do odtworzenia lub przekazania zespołowi. Markdown (.md) to tekst briefu do wklejenia do AI. PDF służy do czytania i konsultacji — nie jest edytowalną kopią formularza.</div>
 </section>
 <section id="study">
 <h2>1. Oryginalne badanie</h2>
@@ -150,7 +134,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <label class="field">Polecenie dla uczestnika</label><textarea data-key="participant_instruction" placeholder="Jak ma brzmieć polecenie? Wpisz instrukcję, którą uczestnik przeczyta, oraz polecenie, które badacz wypowie. Ogranicz tekst na ekranie do minimum."></textarea>
 <label class="field">Przebieg całej sesji</label><textarea data-key="session_flow" placeholder="Zgoda → kalibracja → trening → próby → zakończenie."></textarea>
 <label class="field">Przebieg pojedynczej próby</label><textarea data-key="trial_flow" placeholder="Np. punkt fiksacji → bodziec → odpowiedź → koniec próby. Podaj czasy i sposób przejścia między krokami."></textarea>
-<div class="two"><div><label class="field"><span title="Randomizacja to losowanie kolejności. Kontrbalansowanie to równomierne rozłożenie kolejności warunków między uczestnikami.">Randomizacja / kontrbalansowanie</span></label><textarea data-key="randomization" placeholder="Np. kolejne próby losujemy dla każdego uczestnika i zapisujemy ziarno losowania. Jeśli kolejność jest stała, uzasadnij dlaczego."></textarea></div><div><label class="field">Początek i koniec sesji oraz prób</label><textarea data-key="trial_boundaries" placeholder="Np. po udanej kalibracji badacz uruchamia badanie; sesja kończy się po wszystkich próbach. Określ też start i koniec pojedynczej próby."></textarea></div></div>
+<div class="two"><div><label class="field"><span title="Randomizacja to losowanie kolejności. Kontrbalansowanie to równomierne rozłożenie kolejności warunków między uczestnikami.">Randomizacja / kontrbalansowanie</span></label><textarea data-key="randomization" placeholder="Np. kolejne próby losujemy dla każdego uczestnika i zapisujemy numer pozwalający odtworzyć losowanie. Jeśli kolejność jest stała, uzasadnij dlaczego."></textarea></div><div><label class="field">Początek i koniec sesji oraz prób</label><textarea data-key="trial_boundaries" placeholder="Np. po udanej kalibracji badacz uruchamia badanie; sesja kończy się po wszystkich próbach. Określ też start i koniec pojedynczej próby."></textarea></div></div>
 <label class="field">Przerwania, błędy, powtórzenia</label><textarea data-key="exceptions" placeholder="Co robimy przy utracie trackingu, błędnej odpowiedzi, przerwaniu?"></textarea>
 <label class="field">Odpowiedź uczestnika</label><select data-key="response_method"><option value="">Nie ustalono</option><option>Klawiatura</option><option>Mysz</option><option>Bez odpowiedzi manualnej</option><option>Inna — opisz w procedurze</option></select>
 <label class="field">Liczba prób, czasy prezentacji i reguły zakończenia</label><textarea data-key="trial_timing" placeholder="Liczba bloków i prób, trening, jednostki czasu, limity i przerwy."></textarea>
@@ -165,7 +149,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <label class="field">Detekcja fiksacji i wizyt</label><textarea data-key="fixation_method" placeholder="Algorytm i wersja, parametry, jednostki, obsługa nieważnych próbek, reguły łączenia oczu i wejścia w AOI. Surowa próbka wzroku nie jest fiksacją."></textarea>
 <label class="field">Schemat danych — jakie pola zapisujemy dla każdej próby?</label><textarea data-key="data_schema" placeholder="participant_id, trial_id, condition, stimulus_id, start/end, response, accuracy, tracking status…"></textarea>
 <label class="field">Plan analizy</label><textarea data-key="analysis_plan" placeholder="Jak agregujemy dane? Jakie porównanie odpowie na hipotezę?"></textarea>
-<div class="tip"><b>Sprawdź:</b> czy zapisane dane pozwolą odtworzyć warunek, bodziec, przebieg próby i wynik? Czas wykonania zadania i pomiary ruchu oczu to różne informacje.</div>
+<div class="tip">Możecie poprosić AI o pomoc w wyborze pomiarów, zapisie danych i planie analizy. Poproście też o proste wyjaśnienie tych decyzji, żeby rozumieć, co mierzycie i jak odczytać wyniki.</div>
 </section>
 <section id="build">
 <h2>6. Specyfikacja prototypu</h2><p class="lead">Przełóż metodologię na funkcje aplikacji.</p>
@@ -203,10 +187,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <label><input type="checkbox" data-check="data_raw"> Surowe próbki wzroku z timestampami, ważnością i trybem źródła</label>
 <label><input type="checkbox" data-check="data_events"> Zdarzenia sesji i prób z identyfikatorami warunku i bodźca</label>
 <label><input type="checkbox" data-check="data_metrics"> Wyniki pomiarów obliczone według opisanych reguł</label>
-<label><input type="checkbox" data-check="data_config"> Konfiguracja, wersje i ziarno randomizacji</label>
+<label><input type="checkbox" data-check="data_config"> Konfiguracja, wersje i numer pozwalający odtworzyć losowanie</label>
 </fieldset>
 <label class="field">Format danych prototypu</label><select data-key="experiment_export"><option value="">Do ustalenia</option><option>CSV + JSON konfiguracji</option><option>TSV + JSON konfiguracji</option><option>JSON Lines + JSON konfiguracji</option><option>Inny — opisz w schemacie danych</option></select>
-<label class="field">Repozytorium / instrukcja uruchomienia</label><input type="text" data-key="repo_url" placeholder="URL repozytorium GitHub">
 </section>
 <section id="quality">
 <h2>7. Testy, jakość i etyka</h2><p class="lead">Zaznacz punkt po wykonaniu.</p>
@@ -240,13 +223,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <textarea id="briefPreview" readonly></textarea>
 <p class="small">Podgląd i eksport aktualizują się po każdej zmianie. Puste pola są oznaczone jako „DO UZUPEŁNIENIA”. Niezaznaczone testy nie oznaczają zaliczenia.</p>
 <div class="toolbar">
-<button class="primary" data-action="briefBtn">Pobierz brief dla AI (.md)</button>
-<button data-action="exportBtn">Kopia odpowiedzi (.json)</button>
-<button data-action="importBtn">Wczytaj kopię (.json)</button>
-<button data-action="printBtn">Drukuj / zapisz PDF</button>
-<button data-action="resetBtn">Wyczyść formularz</button>
+<button class="primary" id="briefBtn">Pobierz brief dla AI (.md)</button>
+<button id="exportBtn">Kopia odpowiedzi (.json)</button>
+<button id="importBtn">Wczytaj kopię (.json)</button>
+<input id="importFile" type="file" accept=".json,application/json" hidden>
+<button id="printBtn">Drukuj / zapisz PDF</button>
+<button id="resetBtn">Wyczyść formularz</button>
 </div>
-<p id="bottomActionStatus" class="status" role="status" aria-live="polite" hidden></p>
+<p id="actionStatus" class="status" role="status" aria-live="polite" hidden></p>
 </div>
 <div class="tip"><b>Przed oddaniem:</b> druga osoba z zespołu powinna móc uruchomić aplikację, przeprowadzić próbę i znaleźć zapisane dane bez ustnych wyjaśnień autorów.</div>
 </section>
@@ -267,7 +251,7 @@ const retiredFields = new Map([
   ["team_roles", "string"], ["project_stage", "string"], ["replication_type", "string"],
   ["order_method", "string"], ["aoi1_constant", "string"], ["aoi2_constant", "string"],
   ["aoi3_constant", "string"], ["ai_acceptance", "string"], ["design_undecided", "boolean"],
-  ["legacy_team_name", "string"]
+  ["legacy_team_name", "string"], ["repo_url", "string"]
 ]);
 const teamColors = { red: "#d32f2f", blue: "#1565c0", black: "#000000", white: "#ffffff", yellow: "#ffdf00", pink: "#f48fb1" };
 let archivedFields = {};
@@ -282,12 +266,6 @@ function message(id, text, error = false) {
   el.hidden = false;
   el.textContent = text;
   el.classList.toggle("error", error);
-  if (id === "actionStatus") {
-    const bottom = document.getElementById("bottomActionStatus");
-    bottom.hidden = false;
-    bottom.textContent = text;
-    bottom.classList.toggle("error", error);
-  }
 }
 
 function reportError(id, text, error) {
@@ -538,13 +516,6 @@ function update() {
     block.hidden = own;
     for (const el of block.querySelectorAll("input, textarea, select")) el.disabled = own;
   }
-  const migration = document.getElementById("migrationStatus");
-  migration.hidden = Object.keys(archivedFields).length === 0;
-  migration.textContent = "Wczytano starsze odpowiedzi. Usunięte pola i dawną nazwę zespołu zachowano w kopii JSON jako archived_fields; nie trafiają do briefu. Sprawdź kolor zespołu i rodzaj badania.";
-  const tests = checks.filter(el => el.closest("#quality"));
-  const done = tests.filter(el => el.checked).length;
-  document.getElementById("progressText").textContent = "Potwierdzone testy: " + done + " / " + tests.length;
-  document.getElementById("progressBar").value = tests.length ? Math.round(done / tests.length * 100) : 0;
   document.getElementById("briefPreview").value = brief();
 }
 
@@ -572,9 +543,6 @@ function download(content, filename, type) {
 for (const el of controls) {
   el.addEventListener("input", save);
   el.addEventListener("change", save);
-}
-for (const button of document.querySelectorAll("[data-action]")) {
-  button.addEventListener("click", () => document.getElementById(button.dataset.action).click());
 }
 document.getElementById("briefBtn").addEventListener("click", () => {
   download(brief(), "brief-replikacja-tobii-x120.md", "text/markdown;charset=utf-8");

@@ -27,7 +27,7 @@ Obsługę Tobii X120 trzeba osobno potwierdzić dla wersji SDK i środowiska lab
 - Zieloną sekcję **Podsumowanie zespołu** studenci wypełniają własnymi słowami,
   nawet jeśli AI pomogło im uzupełnić pozostałe sekcje w VS Code.
 - Podgląd briefu odświeża się automatycznie. Przyciski eksportu znajdują się
-  na początku i na końcu formularza.
+  na końcu formularza.
 
 ## Zapis, praca zespołowa i eksport
 
