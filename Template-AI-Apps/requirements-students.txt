@@ -1,0 +1,7 @@
+psychopy>=2024.1.0
+tobii-research
+numpy
+pillow
+sounddevice
+gtts>=2.3.0
+pyttsx3>=2.90

@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Zadanie zaliczeniowe — wpływ spojrzenia na wybór</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182b3a;
+      --muted: #526474;
+      --line: #dce5e9;
+      --paper: #ffffff;
+      --canvas: #f2f6f7;
+      --original: #eaf1f5;
+      --demo: #edf6f1;
+      --accent: #1e6655;
+      --accent-dark: #174b40;
+      --highlight: #f8f2df;
+      --shadow: 0 22px 60px rgb(24 43 58 / 9%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgb(208 228 224 / 55%), transparent 34rem),
+        var(--canvas);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(100% - 40px, 1060px);
+      margin: 48px auto;
+      padding: clamp(24px, 5vw, 60px);
+      background: var(--paper);
+      border: 1px solid rgb(220 229 233 / 85%);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 750;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.1rem, 5vw, 3.6rem);
+      font-weight: 500;
+      letter-spacing: -.035em;
+      line-height: 1.08;
+    }
+
+    .intro {
+      max-width: 710px;
+      margin: 20px 0 30px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .source {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--accent-dark);
+      font-size: .88rem;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .source:hover { background: var(--demo); }
+    .source:focus-visible { outline: 3px solid #7ab7a5; outline-offset: 3px; }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 38px 0 14px;
+    }
+
+    .legend-item {
+      padding: 16px 18px;
+      border-radius: 14px;
+    }
+
+    .legend-item.original { background: var(--original); }
+    .legend-item.demo { background: var(--demo); }
+
+    .legend-label {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: .76rem;
+      font-weight: 750;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .legend-item strong { font-size: .97rem; }
+
+    .comparison {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      table-layout: fixed;
+    }
+
+    .comparison th {
+      padding: 0 20px 8px;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 750;
+      letter-spacing: .09em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    .comparison th:first-child { width: 22%; }
+
+    .comparison td {
+      padding: 19px 20px;
+      vertical-align: top;
+      font-size: .94rem;
+    }
+
+    .comparison tbody tr td:first-child {
+      border-radius: 12px 0 0 12px;
+      background: #f7f9fa;
+      font-weight: 700;
+    }
+
+    .comparison tbody tr td:nth-child(2) { background: var(--original); }
+    .comparison tbody tr td:last-child {
+      border-radius: 0 12px 12px 0;
+      background: var(--demo);
+    }
+
+    .mobile-label { display: none; }
+
+    .caution {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 13px;
+      margin-top: 27px;
+      padding: 19px 21px;
+      border: 1px solid #eadfb8;
+      border-radius: 14px;
+      background: var(--highlight);
+    }
+
+    .caution-icon {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 50%;
+      background: #efe2b9;
+      font-weight: 800;
+    }
+
+    .caution p { margin: 0; font-size: .92rem; }
+    .caution strong { display: block; margin-bottom: 3px; }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    @media (max-width: 700px) {
+      main {
+        width: min(100% - 24px, 540px);
+        margin: 12px auto;
+        padding: 25px 19px;
+        border-radius: 18px;
+      }
+
+      .legend { gap: 8px; }
+      .legend-item { padding: 13px; }
+
+      .comparison, .comparison tbody, .comparison tr, .comparison td {
+        display: block;
+        width: 100%;
+      }
+
+      .comparison thead { display: none; }
+      .comparison { border-spacing: 0; }
+      .comparison tr {
+        overflow: hidden;
+        margin: 0 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+      }
+
+      .comparison td { padding: 13px 15px; }
+      .comparison tbody tr td:first-child,
+      .comparison tbody tr td:nth-child(2),
+      .comparison tbody tr td:last-child { border-radius: 0; }
+
+      .comparison tbody tr td:first-child {
+        padding-top: 14px;
+        padding-bottom: 11px;
+        background: #f7f9fa;
+      }
+
+      .mobile-label {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: .68rem;
+        font-weight: 750;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      .caution { grid-template-columns: 28px 1fr; padding: 15px; }
+    }
+
+    @media print {
+      @page { size: A4 portrait; margin: 13mm; }
+      body { background: #fff; }
+      main {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      h1 { font-size: 27pt; }
+      .intro { margin: 12px 0 18px; font-size: 10pt; }
+      .legend { margin-top: 18px; }
+      .comparison { border-spacing: 0 5px; }
+      .comparison td { padding: 9px 10px; font-size: 8.5pt; }
+      .comparison th { padding: 0 10px 4px; font-size: 7pt; }
+      .caution { margin-top: 12px; padding: 12px; }
+      .caution p { font-size: 8pt; }
+      footer { margin-top: 13px; padding-top: 8px; font-size: 7.5pt; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Projekt demonstracyjny · psychologia poznawcza</p>
+      <h1>Czy patrzenie może zmienić to, co wybieramy?</h1>
+      <p class="intro">
+        Krótka demonstracja efektu kaskady spojrzenia: sprawdzamy, czy dłuższe
+        oglądanie jednej z dwóch figur wiąże się z częstszym jej wyborem.
+      </p>
+      <a class="source" href="https://github.com/eyelab-swps-wr/ST_AI_ET_Template_2026-2027/blob/main/badania/shimojo2003.pdf">
+        Badanie źródłowe: Shimojo i in. (2003) <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <section aria-label="Porównanie badania oryginalnego i demonstracji">
+      <div class="legend" aria-hidden="true">
+        <div class="legend-item original">
+          <span class="legend-label">Punkt odniesienia</span>
+          <strong>Badanie oryginalne</strong>
+        </div>
+        <div class="legend-item demo">
+          <span class="legend-label">Wersja na zajęcia</span>
+          <strong>Nasza demonstracja</strong>
+        </div>
+      </div>
+
+      <table class="comparison">
+        <thead>
+          <tr>
+            <th scope="col">Element</th>
+            <th scope="col">Badanie oryginalne</th>
+            <th scope="col">Nasza demonstracja</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pytanie badawcze</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Czy spojrzenie tylko odzwierciedla rodzącą się preferencję, czy może również na nią wpływać?</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Czy po dłuższym oglądaniu jednego z dwóch obrazów uczestnik częściej wybierze właśnie ten obraz?</td>
+          </tr>
+          <tr>
+            <td>Co widzi uczestnik?</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>W eksperymencie 2 pary twarzy pokazywano naprzemiennie: jedna twarz była widoczna 900 ms, druga 300 ms. Uczestnik śledził obrazy wzrokiem, a potem wybierał atrakcyjniejszy.</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Dwie neutralne, abstrakcyjne figury pokazywane pojedynczo na przemian. W warunku nierównej ekspozycji jedna pojawia się 900 ms, druga 300 ms; w kontrolnym — obie po 600 ms.</td>
+          </tr>
+          <tr>
+            <td>Co mierzymy?</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Odsetek wyborów twarzy oglądanej dłużej. W pozostałych częściach pracy rejestrowano też kierunek spojrzenia i jego zmianę przed decyzją.</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Wybór po ekspozycji oraz oceny atrakcyjności obu figur w skali 1–7 przed pokazem i po nim. Bez eye-trackera nie mierzymy faktycznego kierunku spojrzenia.</td>
+          </tr>
+          <tr>
+            <td>Przebieg</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Uczestnicy oglądali pary twarzy wielokrotnie — 2, 6 lub 12 razy — po czym wskazywali atrakcyjniejszą. Porównywano także warunki kontrolne.</td>
+            <td><span class="mobile-label">Nasza demonstracja · ok. 5 min</span>Oceń figury; obejrzyj sześć naprzemiennych prezentacji 900/300 ms i osobną parę w warunku 600/600 ms; wybierz preferowaną figurę i oceń obie ponownie. Zmieniaj stronę figury pokazywanej dłużej.</td>
+          </tr>
+          <tr>
+            <td>Luka / ograniczenie</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Czy na wybór wpływa aktywne przenoszenie spojrzenia, czy samo dłuższe oglądanie? Autorzy dodali kontrole, by odróżniać te wyjaśnienia.</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Sprawdzamy, czy w naszej grupie krótka ekspozycja wiąże się ze zmianą wyboru. Demonstracja nie rozstrzyga, czy ewentualny efekt wynika ze spojrzenia, czy z dłuższej ekspozycji.</td>
+          </tr>
+          <tr>
+            <td>Przewidywanie</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Autorzy stwierdzili, że dłużej oglądana twarz była częściej wybierana: po 6 powtórzeniach w 59% prób. W kontrolach bez zmiany spojrzenia efektu nie było.</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Przewidujemy niewielką tendencję do częstszego wyboru figury pokazywanej dłużej. To przewidywanie, nie gwarantowany wynik.</td>
+          </tr>
+          <tr>
+            <td>Porównywane warunki</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Manipulacja spojrzeniem: 900/300 ms i różna liczba powtórzeń; kontrolowano m.in. patrzenie w środek przy tej samej ekspozycji oraz wybór według cechy innej niż atrakcyjność.</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Nierówna ekspozycja 900/300 ms kontra równa 600/600 ms. Równoważ stronę i kolejność; między uczestnikami zamieniaj, która figura jest pokazywana dłużej.</td>
+          </tr>
+          <tr>
+            <td>Co jest ważne na ekranie?</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Dwie twarze i naprzemienny czas prezentacji. Rejestrowano, na którą twarz patrzył uczestnik oraz którą wybierał.</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Wyraźna, pojedyncza figura, stałe położenie i kontrolowany czas widoczności. Instrukcja: patrz na pokazywany obraz. Zapisuj wybór i oceny przed/po.</td>
+          </tr>
+          <tr>
+            <td>Nasza modyfikacja</td>
+            <td><span class="mobile-label">Badanie oryginalne</span>Shimojo, Simion, Shimojo i Scheier (2003), “Gaze bias both reflects and influences preference”, <em>Nature Neuroscience</em>, 6, 1317–1322. DOI: 10.1038/nn1150.</td>
+            <td><span class="mobile-label">Nasza demonstracja</span>Upraszczamy procedurę do dwóch warunków i sześciu prezentacji, używamy abstrakcyjnych figur, dodajemy krótką ocenę przed/po i rezygnujemy z eye-trackera. To pokazuje ideę, ale nie odtwarza pełnej kontroli laboratoryjnej ani nie dowodzi wpływu samego spojrzenia.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <aside class="caution" aria-label="Ważne ograniczenie">
+      <span class="caution-icon" aria-hidden="true">i</span>
+      <p>
+        <strong>Ważne przy interpretacji</strong>
+        Bez eye-trackera nie wiemy, czy uczestnik rzeczywiście patrzył na prezentowaną
+        figurę. Ponieważ zmieniamy też czas ekspozycji, wynik jest demonstracją
+        zjawiska, a nie testem przyczynowego wpływu samego spojrzenia.
+      </p>
+    </aside>
+
+    <footer>
+      Podstawa: Shimojo, S., Simion, C., Shimojo, E. &amp; Scheier, C. (2003).
+      DOI: 10.1038/nn1150. Opracowanie dydaktyczne na zajęcia.
+    </footer>
+  </main>
+</body>
+</html>

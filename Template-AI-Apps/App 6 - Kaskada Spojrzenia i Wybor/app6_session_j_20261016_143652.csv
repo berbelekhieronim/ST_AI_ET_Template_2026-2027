@@ -1,0 +1,9 @@
+﻿participant_id,trial,condition,repetitions,long_exposure_s,short_exposure_s,baseline_choice,final_choice,chose_longer,choice_changed,longer_stimulus,first_presented,frame_rate_hz
+j,1,equal,6,0.6,0.6,b,a,not_applicable,yes,none,a,60.0
+j,2,unequal,6,0.9,0.3,a,b,no,yes,a,a,60.0
+j,3,equal,6,0.6,0.6,a,b,not_applicable,yes,none,b,60.0
+j,4,equal,6,0.6,0.6,a,b,not_applicable,yes,none,b,60.0
+j,5,unequal,6,0.9,0.3,b,b,no,no,a,b,60.0
+j,6,unequal,6,0.9,0.3,b,b,no,no,a,b,60.0
+j,7,equal,6,0.6,0.6,a,a,not_applicable,no,none,a,60.0
+j,8,unequal,6,0.9,0.3,a,b,yes,yes,b,a,60.0
